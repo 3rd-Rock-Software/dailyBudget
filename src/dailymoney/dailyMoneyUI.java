@@ -6,21 +6,29 @@
 package dailymoney;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Simon Weatherley
  */
 public class dailyMoneyUI extends javax.swing.JFrame
-    {
+{
+
+    private boolean emptyBalance = false;
 
     /**
      * Creates new form dailyMoneyUI
      */
     public dailyMoneyUI()
-        {
+    {
         initComponents();
-        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,6 +51,8 @@ public class dailyMoneyUI extends javax.swing.JFrame
         textFieldNumberOfDaysLeft = new javax.swing.JTextField();
         textFieldBudgetPerDay = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        buttonCalculate = new javax.swing.JButton();
+        buttonExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,6 +77,13 @@ public class dailyMoneyUI extends javax.swing.JFrame
         jLabel5.setText("Budget per day :");
 
         textFieldCurrentBankBalance.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
+        textFieldCurrentBankBalance.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                textFieldCurrentBankBalanceActionPerformed(evt);
+            }
+        });
 
         textFieldTodaysDate.setEditable(false);
         textFieldTodaysDate.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
@@ -93,6 +110,28 @@ public class dailyMoneyUI extends javax.swing.JFrame
         jLabel6.setText("Available Funds per day");
         jLabel6.setBorder(new javax.swing.border.MatteBorder(null));
 
+        buttonCalculate.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        buttonCalculate.setText("Calculate");
+        buttonCalculate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        buttonCalculate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonCalculateActionPerformed(evt);
+            }
+        });
+
+        buttonExit.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        buttonExit.setText("EXIT");
+        buttonExit.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        buttonExit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,6 +139,7 @@ public class dailyMoneyUI extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -114,7 +154,12 @@ public class dailyMoneyUI extends javax.swing.JFrame
                             .addComponent(textFieldMonthEnddate)
                             .addComponent(textFieldNumberOfDaysLeft)
                             .addComponent(textFieldBudgetPerDay)))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,7 +187,11 @@ public class dailyMoneyUI extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(textFieldBudgetPerDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(89, 89, 89))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -150,60 +199,109 @@ public class dailyMoneyUI extends javax.swing.JFrame
 
     private void textFieldTodaysDateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_textFieldTodaysDateActionPerformed
     {//GEN-HEADEREND:event_textFieldTodaysDateActionPerformed
-    LocalDate today = LocalDate.parse(LocalDate.now().toString());
-    textFieldTodaysDate.setText(today.toString());
+
     }//GEN-LAST:event_textFieldTodaysDateActionPerformed
+
+    private void textFieldCurrentBankBalanceActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_textFieldCurrentBankBalanceActionPerformed
+    {//GEN-HEADEREND:event_textFieldCurrentBankBalanceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldCurrentBankBalanceActionPerformed
+
+    private void buttonCalculateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonCalculateActionPerformed
+    {//GEN-HEADEREND:event_buttonCalculateActionPerformed
+        String formattedBudget = null;
+        if (textFieldCurrentBankBalance.getText().equals(""))
+        {
+            emptyBalance = true;
+
+            JOptionPane.showMessageDialog(null, "Please enter a value for the bank balance");
+        }
+        else
+        {
+            double currentBalance = Integer.parseInt(textFieldCurrentBankBalance.getText());
+            getTodaysDate();
+            getEndOfMonthDate();
+            int numberOfDaysRemaining = getNumberOfDaysRemaining();
+            double budget = 0;
+
+            if (!(numberOfDaysRemaining == 0))
+            {
+                budget = currentBalance / numberOfDaysRemaining;
+                formattedBudget = String.format(String.valueOf(budget), "###.#00");
+            }
+            else
+            {
+                formattedBudget = String.valueOf(currentBalance);
+            }
+            textFieldBudgetPerDay.setText(formattedBudget);
+
+        }
+
+    }//GEN-LAST:event_buttonCalculateActionPerformed
+
+    private void getTodaysDate()
+    {
+        LocalDate today = LocalDate.parse(LocalDate.now().toString());
+        textFieldTodaysDate.setText(today.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+    }
+
+    private void buttonExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonExitActionPerformed
+    {//GEN-HEADEREND:event_buttonExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_buttonExitActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[])
-        {
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try
-            {
+        {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-                {
+            {
                 if ("Nimbus".equals(info.getName()))
-                    {
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    }
                 }
             }
+        }
         catch (ClassNotFoundException ex)
-            {
+        {
             java.util.logging.Logger.getLogger(dailyMoneyUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
+        }
         catch (InstantiationException ex)
-            {
+        {
             java.util.logging.Logger.getLogger(dailyMoneyUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
+        }
         catch (IllegalAccessException ex)
-            {
+        {
             java.util.logging.Logger.getLogger(dailyMoneyUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
+        }
         catch (javax.swing.UnsupportedLookAndFeelException ex)
-            {
+        {
             java.util.logging.Logger.getLogger(dailyMoneyUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
+        }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable()
-            {
+        {
             public void run()
-                {
+            {
                 new dailyMoneyUI().setVisible(true);
-                }
-            });
-        }
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonCalculate;
+    private javax.swing.JButton buttonExit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -216,4 +314,24 @@ public class dailyMoneyUI extends javax.swing.JFrame
     private javax.swing.JTextField textFieldNumberOfDaysLeft;
     private javax.swing.JTextField textFieldTodaysDate;
     // End of variables declaration//GEN-END:variables
+
+    private void getEndOfMonthDate()
+    {
+        //get last day of month
+        if (!emptyBalance)
+        {
+            LocalDate EOMdate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+            textFieldMonthEnddate.setText(EOMdate.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+        }
     }
+
+    private int getNumberOfDaysRemaining()
+    {
+        int daysRemaining = 0;
+        LocalDate today = LocalDate.now();
+        LocalDate EOM = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+        daysRemaining = (Period.between(today, EOM).getDays());
+        textFieldNumberOfDaysLeft.setText(String.valueOf(daysRemaining));
+        return daysRemaining;
+    }
+}
