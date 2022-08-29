@@ -5,9 +5,12 @@
  */
 package dailymoney;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import javax.swing.JDialog;
@@ -21,6 +24,7 @@ public class dailyMoneyUI extends javax.swing.JFrame
 {
 
     private boolean emptyBalance = false;
+    private String formattedBudget;
 
     /**
      * Creates new form dailyMoneyUI
@@ -47,7 +51,7 @@ public class dailyMoneyUI extends javax.swing.JFrame
         jLabel5 = new javax.swing.JLabel();
         textFieldCurrentBankBalance = new javax.swing.JTextField();
         textFieldTodaysDate = new javax.swing.JTextField();
-        textFieldMonthEnddate = new javax.swing.JTextField();
+        textFieldNextPayDay = new javax.swing.JTextField();
         textFieldNumberOfDaysLeft = new javax.swing.JTextField();
         textFieldBudgetPerDay = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -58,7 +62,7 @@ public class dailyMoneyUI extends javax.swing.JFrame
 
         jLabel1.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Please enter current bank balance :");
+        jLabel1.setText("Please enter current bank balance (£):");
 
         jLabel2.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -66,7 +70,7 @@ public class dailyMoneyUI extends javax.swing.JFrame
 
         jLabel3.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("End of Month Date :");
+        jLabel3.setText("Next pay day :");
 
         jLabel4.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -95,8 +99,8 @@ public class dailyMoneyUI extends javax.swing.JFrame
             }
         });
 
-        textFieldMonthEnddate.setEditable(false);
-        textFieldMonthEnddate.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
+        textFieldNextPayDay.setEditable(false);
+        textFieldNextPayDay.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
 
         textFieldNumberOfDaysLeft.setEditable(false);
         textFieldNumberOfDaysLeft.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
@@ -149,9 +153,9 @@ public class dailyMoneyUI extends javax.swing.JFrame
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textFieldTodaysDate, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                            .addComponent(textFieldTodaysDate, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                             .addComponent(textFieldCurrentBankBalance)
-                            .addComponent(textFieldMonthEnddate)
+                            .addComponent(textFieldNextPayDay)
                             .addComponent(textFieldNumberOfDaysLeft)
                             .addComponent(textFieldBudgetPerDay)))
                     .addGroup(layout.createSequentialGroup()
@@ -178,7 +182,7 @@ public class dailyMoneyUI extends javax.swing.JFrame
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(textFieldMonthEnddate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldNextPayDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -209,40 +213,42 @@ public class dailyMoneyUI extends javax.swing.JFrame
 
     private void buttonCalculateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonCalculateActionPerformed
     {//GEN-HEADEREND:event_buttonCalculateActionPerformed
-        String formattedBudget = null;
         if (textFieldCurrentBankBalance.getText().equals(""))
         {
             emptyBalance = true;
-
             JOptionPane.showMessageDialog(null, "Please enter a value for the bank balance");
         }
         else
         {
-            double currentBalance = Integer.parseInt(textFieldCurrentBankBalance.getText());
-            getTodaysDate();
-            getEndOfMonthDate();
-            int numberOfDaysRemaining = getNumberOfDaysRemaining();
+            emptyBalance = false;
+            double currentBalance = Double.parseDouble(textFieldCurrentBankBalance.getText());
+            LocalDate today = getTodaysDate();
+            LocalDate nextPayDay = getNextPayday(today, 24);
+            int numberOfDaysRemaining = (int) ChronoUnit.DAYS.between(today, nextPayDay);
             double budget = 0;
-
             if (!(numberOfDaysRemaining == 0))
             {
                 budget = currentBalance / numberOfDaysRemaining;
-                formattedBudget = String.format(String.valueOf(budget), "###.#00");
+                DecimalFormat df = new DecimalFormat("£" + "#,##0.00");
+                formattedBudget = df.format(budget);
             }
             else
             {
                 formattedBudget = String.valueOf(currentBalance);
             }
+            textFieldNumberOfDaysLeft.setText(String.valueOf(numberOfDaysRemaining));
+            textFieldNextPayDay.setText(nextPayDay.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
             textFieldBudgetPerDay.setText(formattedBudget);
 
         }
 
     }//GEN-LAST:event_buttonCalculateActionPerformed
 
-    private void getTodaysDate()
+    private LocalDate getTodaysDate()
     {
         LocalDate today = LocalDate.parse(LocalDate.now().toString());
         textFieldTodaysDate.setText(today.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+        return today;
     }
 
     private void buttonExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonExitActionPerformed
@@ -310,28 +316,13 @@ public class dailyMoneyUI extends javax.swing.JFrame
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField textFieldBudgetPerDay;
     private javax.swing.JTextField textFieldCurrentBankBalance;
-    private javax.swing.JTextField textFieldMonthEnddate;
+    private javax.swing.JTextField textFieldNextPayDay;
     private javax.swing.JTextField textFieldNumberOfDaysLeft;
     private javax.swing.JTextField textFieldTodaysDate;
     // End of variables declaration//GEN-END:variables
 
-    private void getEndOfMonthDate()
+    private LocalDate getNextPayday(LocalDate today, int payday)
     {
-        //get last day of month
-        if (!emptyBalance)
-        {
-            LocalDate EOMdate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-            textFieldMonthEnddate.setText(EOMdate.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
-        }
-    }
-
-    private int getNumberOfDaysRemaining()
-    {
-        int daysRemaining = 0;
-        LocalDate today = LocalDate.now();
-        LocalDate EOM = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-        daysRemaining = (Period.between(today, EOM).getDays());
-        textFieldNumberOfDaysLeft.setText(String.valueOf(daysRemaining));
-        return daysRemaining;
+        return YearMonth.from(today).plusMonths(1).atDay(payday);
     }
 }

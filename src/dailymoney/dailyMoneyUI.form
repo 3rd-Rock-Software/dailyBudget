@@ -37,9 +37,9 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="textFieldTodaysDate" alignment="0" pref="337" max="32767" attributes="0"/>
+                          <Component id="textFieldTodaysDate" alignment="0" pref="303" max="32767" attributes="0"/>
                           <Component id="textFieldCurrentBankBalance" alignment="0" max="32767" attributes="0"/>
-                          <Component id="textFieldMonthEnddate" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textFieldNextPayDay" alignment="0" max="32767" attributes="0"/>
                           <Component id="textFieldNumberOfDaysLeft" max="32767" attributes="0"/>
                           <Component id="textFieldBudgetPerDay" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -74,7 +74,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="textFieldMonthEnddate" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textFieldNextPayDay" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -103,7 +103,7 @@
           <Font name="Courier New" size="18" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="Please enter current bank balance :"/>
+        <Property name="text" type="java.lang.String" value="Please enter current bank balance (&#xa3;):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -121,7 +121,7 @@
           <Font name="Courier New" size="18" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="End of Month Date :"/>
+        <Property name="text" type="java.lang.String" value="Next pay day :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -163,7 +163,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldTodaysDateActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="textFieldMonthEnddate">
+    <Component class="javax.swing.JTextField" name="textFieldNextPayDay">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
